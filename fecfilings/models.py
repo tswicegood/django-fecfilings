@@ -1,14 +1,12 @@
 from django.db import models
 
 
-class Party(models.Model):
-    name = models.CharField(max_length=50)
-
+FEC_FILING_URL = "http://fec.gov/disclosurehs/HSContrbTran.do?format=%(format)s&candId=%(candidate_id)s&electionYr=%(year)s&contCategory=INDIVIDUAL&candOfficeSt=%(state)s&category=state%(chamber)s_all&contComeFrom=candlist&detailComeFrom=candlist"
 
 class Candidate(models.Model):
     id = models.CharField(max_length=10, primary_key=True)
     name = models.CharField(max_length=200)
-    party = models.ForeignKey(Party)
+    party = models.CharField(max_length=50)
 
     # TODO: can this be made a foreign key?
     incumbent = models.CharField(max_length=20)
@@ -30,7 +28,22 @@ class Candidate(models.Model):
     transfers = models.IntegerField()
 
 
+    def __unicode__(self):
+        return self.name
+
+
+    def filing_url(self, chamber, format="csv", state="TX", year=2012):
+        return FEC_FILING_URL % {
+            "format": format,
+            "candidate_id": self.id,
+            "year": year,
+            "state": state,
+        }
+
+
 class Contributor(models.Model):
+    candidate = models.ForeignKey(Candidate)
+
     name = models.CharField(max_length=250)
     employer = models.CharField(max_length=250)
     city = models.CharField(max_length=250)
