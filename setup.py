@@ -3,7 +3,7 @@ from distutils.core import setup
 
 setup(
     name='fecfiles',
-    version='0.1.0alpha.0', # TODO: move this into Dolt.get_version()
+    version='0.1.0alpha.0',
     description='Django representation of the FEC filing data',
     author='Travis Swicegood',
     author_email='travis@texastibune.org',
