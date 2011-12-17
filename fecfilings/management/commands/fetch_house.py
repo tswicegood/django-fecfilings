@@ -71,7 +71,7 @@ def row_to_contributor(row):
 class Command(NoArgsCommand):
     def handle(self, **options):
         http = httplib2.Http()
-        c = csv.reader(open("./resources/senate.csv").read().strip().split("\n")[1:])
+        c = csv.reader(open("./resources/house.csv").read().strip().split("\n")[1:])
         for row in c:
             sys.stdout.write("Creating candidate... ")
             sys.stdout.flush()
@@ -83,7 +83,7 @@ class Command(NoArgsCommand):
             print "DONE!"
             print "Loaded %s" % candidate
 
-            response, body = http.request(candidate.filing_url("senate"))
+            response, body = http.request(candidate.filing_url("house"))
             if response["status"] != "200":
                 print "ERROR!"
                 print response
